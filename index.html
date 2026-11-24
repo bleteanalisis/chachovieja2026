@@ -1,0 +1,1100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d0b16">
+<title>ChachoVieja 2026</title>
+<link rel="icon" href="logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout: cristal líquido sobre fondo nocturno con manchas de color del logo. Cabecera con logo, 4 pestañas en cápsula flotante. */
+:root {
+  --bg: #0d0b16;
+  --ink: #f6f1ff;
+  --muted: #b6aed0;
+  --glass-a: rgba(255,255,255,.16);
+  --glass-b: rgba(255,255,255,.05);
+  --glass-line: rgba(255,255,255,.22);
+  --glass-hi: rgba(255,255,255,.45);
+  --shadow: rgba(0,0,0,.45);
+  --field: rgba(255,255,255,.08);
+  --accent: #ff2d8a;
+  --accent-2: #8b5cf6;
+  --accent-ink: #ffffff;
+  --lime: #b6f23a;
+  --h1a: #ffffff; --h1b: #ffc2e0;
+  --good: #6ee7a8;
+  --good-bg: rgba(110,231,168,.16);
+  --warn: #ffc857;
+  --warn-bg: rgba(255,200,87,.16);
+  --bad: #ff8a8a;
+  --orb1: #ff2d8a; --orb2: #7c3aed; --orb3: #34d399; --orb4: #ff8a1f;
+  --orb-alpha: .55;
+  --font-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f1ecfb; --ink: #1d1233; --muted: #5d5280;
+    --glass-a: rgba(255,255,255,.72); --glass-b: rgba(255,255,255,.36); --glass-line: rgba(255,255,255,.9);
+    --glass-hi: rgba(255,255,255,1); --shadow: rgba(70,40,130,.22); --field: rgba(255,255,255,.65);
+    --accent: #e0166f; --accent-2: #6d3be0; --lime: #4a8500; --h1a: #e0166f; --h1b: #6d3be0; --good: #0e7a4e; --good-bg: rgba(14,122,78,.14);
+    --warn: #9a5a00; --warn-bg: rgba(220,140,0,.17); --bad: #b3261e; --orb-alpha: .42; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f1ecfb; --ink: #1d1233; --muted: #5d5280;
+  --glass-a: rgba(255,255,255,.72); --glass-b: rgba(255,255,255,.36); --glass-line: rgba(255,255,255,.9);
+  --glass-hi: rgba(255,255,255,1); --shadow: rgba(70,40,130,.22); --field: rgba(255,255,255,.65);
+  --accent: #e0166f; --accent-2: #6d3be0; --lime: #4a8500; --h1a: #e0166f; --h1b: #6d3be0; --good: #0e7a4e; --good-bg: rgba(14,122,78,.14);
+  --warn: #9a5a00; --warn-bg: rgba(220,140,0,.17); --bad: #b3261e; --orb-alpha: .42; color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { color-scheme: dark; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.4;
+  min-height: 100vh; position: relative;
+  padding-block: calc(86px + env(safe-area-inset-top, 0px)) 96px; margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.bg { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+.orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: var(--orb-alpha); will-change: transform; animation: drift 26s ease-in-out infinite alternate; }
+.orb.o1 { width: 60vmax; height: 60vmax; background: var(--orb1); left: -22vmax; top: -18vmax; }
+.orb.o2 { width: 55vmax; height: 55vmax; background: var(--orb2); right: -20vmax; top: 18vh; animation-duration: 32s; animation-delay: -8s; }
+.orb.o3 { width: 40vmax; height: 40vmax; background: var(--orb3); left: 10vw; bottom: -20vmax; animation-duration: 38s; animation-delay: -15s; }
+.orb.o4 { width: 30vmax; height: 30vmax; background: var(--orb4); right: 6vw; bottom: 8vh; opacity: calc(var(--orb-alpha) * .6); animation-duration: 30s; animation-delay: -4s; }
+@keyframes drift { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(6vmax,4vmax,0) scale(1.15); } }
+@media (prefers-reduced-motion: reduce) { .orb { animation: none; } * { transition: none !important; } }
+
+.wrap { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
+h2 { font-size: 1.2rem; font-weight: 800; letter-spacing: -.01em; }
+h3 { font-size: .95rem; font-weight: 800; }
+
+/* Cristal líquido */
+.glass {
+  position: relative; border-radius: 26px; padding: 16px;
+  background: linear-gradient(145deg, var(--glass-a), var(--glass-b));
+  border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: blur(24px) saturate(170%); backdrop-filter: blur(24px) saturate(170%);
+  box-shadow: inset 0 1.5px 0 var(--glass-hi), inset 0 -1px 0 rgba(255,255,255,.06), 0 14px 36px -10px var(--shadow);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.glass::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(120% 70% at 12% -10%, rgba(255,255,255,.28), transparent 55%); opacity: .55; }
+.glass > * { position: relative; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .glass { background: color-mix(in srgb, var(--bg) 80%, white 12%); } }
+
+/* Cabecera */
+.hero { flex-direction: column; gap: 14px; }
+.hero-top { display: flex; align-items: center; gap: 14px; }
+.logo { width: 104px; height: 104px; object-fit: contain; flex: none; filter: drop-shadow(0 8px 18px rgba(255,45,138,.45)); }
+.hero-text { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+h1 { font-size: clamp(1.9rem, 8vw, 2.5rem); font-weight: 800; line-height: .95; letter-spacing: -.03em;
+  background: linear-gradient(95deg, var(--h1a), var(--h1b) 80%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 2px 10px rgba(0,0,0,.25)); }
+.when { font-size: .9rem; color: var(--muted); overflow-wrap: anywhere; }
+.count { align-self: flex-start; font-weight: 700; font-size: .85rem; padding: 4px 11px; border-radius: 99px; background: var(--accent); color: var(--accent-ink); }
+.who { font-size: .85rem; color: var(--ink); }
+.link { all: unset; cursor: pointer; color: var(--ink); font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.cap-top { display: flex; justify-content: space-between; gap: 10px; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar { height: 10px; border-radius: 99px; background: var(--field); overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,.25); }
+.bar > i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .7s cubic-bezier(.2,.8,.2,1); }
+.bar.full > i { background: linear-gradient(90deg, var(--warn), var(--accent)); }
+
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { border-radius: 20px; padding: 12px; gap: 2px; }
+.stat .l { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.stat .v { font-family: var(--font-body); font-size: clamp(.95rem, 4.6vw, 1.3rem); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: -.03em; }
+.stat.main .v { color: var(--lime); }
+.stat .v.neg { color: var(--bad); }
+
+/* Formularios */
+form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+form .full { grid-column: 1 / -1; }
+label.f { display: flex; flex-direction: column; gap: 4px; font-size: .75rem; color: var(--muted); min-width: 0; }
+input, select { font: inherit; color: var(--ink); background: var(--field); border: 1px solid var(--glass-line); border-radius: 14px; padding: 12px 14px; min-width: 0; width: 100%; }
+input::placeholder { color: var(--muted); }
+select option { color: #1d1233; }
+input:focus-visible, button:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 16px; padding: 12px 18px; color: var(--accent-ink); cursor: pointer;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 8px 20px -8px var(--accent);
+  transition: transform .15s ease, filter .15s; }
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: scale(.95); }
+.btn.ghost { background: var(--field); color: var(--ink); border: 1px solid var(--glass-line); box-shadow: none; }
+.btn.small { padding: 9px 14px; min-height: 40px; font-size: .88rem; border-radius: 14px; }
+#v-door .btn.small { min-height: 46px; padding: 10px 16px; font-size: .95rem; }
+button, .chip, .pay { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.btn.danger { color: var(--bad); }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn.on { background: var(--good-bg); color: var(--good); border: 1px solid var(--good); box-shadow: none; }
+.msg { font-size: .85rem; color: var(--bad); min-height: 1.2em; }
+.msg.ok { color: var(--good); }
+.note { font-size: .85rem; color: var(--muted); margin: 0; }
+
+/* Listas */
+.row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--glass-line); flex-wrap: wrap; }
+.row:first-child { border-top: 0; }
+.row .txt { flex: 1; min-width: 140px; }
+.row .name { font-weight: 700; overflow-wrap: anywhere; }
+.row .sub { font-size: .8rem; color: var(--muted); overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
+.row .amt { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.acts { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.pay { all: unset; cursor: pointer; flex: none; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--glass-line); background: var(--field);
+  display: grid; place-items: center; color: transparent; font-weight: 800; transition: transform .15s, background .2s; }
+.pay:active { transform: scale(.88); }
+.pay[aria-pressed="true"] { background: var(--good); border-color: var(--good); color: #052e1b; box-shadow: 0 0 16px -2px var(--good); }
+.pay:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.choose { flex-basis: 100%; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 4px 0 2px 54px; }
+.toast { position: fixed; left: 0; right: 0; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 8; display: flex; justify-content: center; pointer-events: none;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.toast > div { pointer-events: auto; max-width: 520px; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 16px; border-radius: 20px;
+  background: var(--ink); color: var(--bg); font-weight: 600; font-size: .9rem; box-shadow: 0 12px 30px -8px var(--shadow); animation: up .3s cubic-bezier(.3,1.3,.5,1); }
+.toast button { font: inherit; font-weight: 800; border: 0; border-radius: 12px; background: transparent; color: var(--accent); padding: 8px 10px; cursor: pointer; }
+@keyframes up { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+details.more summary { cursor: pointer; font-weight: 700; font-size: .9rem; color: var(--ink); padding: 6px 0; }
+textarea { font: inherit; color: var(--ink); background: var(--field); border: 1px solid var(--glass-line); border-radius: 14px; padding: 12px 14px; width: 100%; min-height: 120px; resize: vertical; }
+@media (max-width: 440px) {
+  .glass { padding: 14px; border-radius: 24px; }
+  .logo { width: 84px; height: 84px; }
+  .hero-top { gap: 10px; }
+  .stat { padding: 10px; }
+  .kv.long { flex-direction: column; gap: 2px; }
+  .kv.long span:last-child { text-align: left; font-weight: 600; font-size: .9rem; }
+  .cat { grid-template-columns: 78px minmax(0,1fr); }
+  .cat span:last-child { grid-column: 1 / -1; color: var(--muted); font-size: .8rem; margin-top: -4px; }
+}
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font: inherit; font-size: .88rem; border: 1px solid var(--glass-line); background: var(--field); color: var(--ink); border-radius: 99px; padding: 9px 16px; min-height: 40px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pill { font-size: .72rem; font-weight: 700; border-radius: 99px; padding: 2px 9px; white-space: nowrap; }
+.pill.ok { background: var(--good-bg); color: var(--good); }
+.pill.no { background: var(--warn-bg); color: var(--warn); }
+.pill.m { background: var(--field); color: var(--ink); border: 1px solid var(--glass-line); }
+.empty { color: var(--muted); text-align: center; padding: 20px 8px; }
+.kv { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--glass-line); font-variant-numeric: tabular-nums; }
+.kv:first-of-type { border-top: 0; }
+.kv span:last-child { font-weight: 700; text-align: right; }
+.settle { background: var(--good-bg); color: var(--good); border-radius: 16px; padding: 12px 14px; font-weight: 700; }
+.cat { display: grid; grid-template-columns: 96px minmax(0,1fr) auto; gap: 10px; align-items: center; font-size: .88rem; font-variant-numeric: tabular-nums; }
+.thumbbtn { all: unset; cursor: pointer; flex: none; }
+.thumb { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; border: 1px solid var(--glass-line); display: block; }
+.log { font-size: .85rem; padding: 7px 0; border-top: 1px solid var(--glass-line); display: flex; gap: 8px; justify-content: space-between; }
+.log:first-of-type { border-top: 0; }
+.log time { color: var(--muted); white-space: nowrap; font-size: .78rem; }
+.big-search { font-size: 1.1rem; padding: 15px 16px; }
+.door-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; text-align: center; }
+.door-stats b { display: block; font-size: 1.6rem; font-family: var(--font-display); font-weight: 800; font-variant-numeric: tabular-nums; }
+.door-stats span { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+
+/* Navegación flotante */
+nav { position: fixed; left: 0; right: 0; top: calc(8px + env(safe-area-inset-top, 0px)); z-index: 5; pointer-events: none;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.dock { pointer-events: auto; position: relative; max-width: 520px; margin: 0 auto; padding: 6px; border-radius: 30px; display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
+  background: linear-gradient(145deg, var(--glass-a), var(--glass-b)); border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: blur(26px) saturate(180%); backdrop-filter: blur(26px) saturate(180%);
+  box-shadow: inset 0 1.5px 0 var(--glass-hi), 0 18px 40px -8px var(--shadow); }
+.dock .ind { position: absolute; top: 6px; bottom: 6px; left: 6px; width: calc((100% - 12px) / 4); border-radius: 24px;
+  background: linear-gradient(145deg, rgba(255,255,255,.34), rgba(255,255,255,.1)); box-shadow: inset 0 1px 0 var(--glass-hi), 0 4px 14px -4px var(--shadow);
+  transition: transform .45s cubic-bezier(.3,1.3,.5,1); }
+.dock button { position: relative; font: inherit; font-weight: 700; font-size: .85rem; border: 0; background: transparent; color: var(--ink); opacity: .72; padding: 14px 2px; min-height: 48px; border-radius: 24px; cursor: pointer; transition: opacity .2s; }
+.dock button[aria-selected="true"] { opacity: 1; }
+.hidden-view { display: none !important; }
+
+/* Aviso de nombre */
+.overlay { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(8,6,16,.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.overlay .glass { width: min(420px, 100%); background: linear-gradient(145deg, var(--glass-a), var(--glass-b)), var(--bg); }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i><i class="orb o4"></i></div>
+
+<div class="wrap">
+  <header class="glass hero">
+    <div class="hero-top">
+      <img class="logo" src="logo.png" alt="Logo ChachoVieja 2026" width="104" height="104">
+      <div class="hero-text">
+        <h1>ChachoVieja</h1>
+        <div class="when" id="when"></div>
+        <div class="count" id="count" hidden></div>
+      </div>
+    </div>
+    <div id="capwrap" hidden>
+      <div class="cap-top"><span id="captxt"></span><span id="whoamI" class="who"></span></div>
+      <div class="bar" id="capbar" role="progressbar" aria-label="Aforo"><i></i></div>
+    </div>
+    <div class="who" id="who"></div>
+    <div class="who" id="mode"></div>
+  </header>
+
+  <div id="app">
+    <div class="stats" id="stats" style="margin-bottom:14px">
+      <div class="glass stat main"><div class="l">Recaudado</div><div class="v" id="s-inc">0,00 €</div></div>
+      <div class="glass stat"><div class="l">Gastos</div><div class="v" id="s-exp">0,00 €</div></div>
+      <div class="glass stat"><div class="l">Saldo</div><div class="v" id="s-bal">0,00 €</div></div>
+    </div>
+
+    <!-- INVITADOS -->
+    <section id="v-guests" style="display:flex;flex-direction:column;gap:14px">
+      <div class="glass">
+        <h2>Añadir invitado</h2>
+        <form id="gform" autocomplete="off">
+          <input id="gname" placeholder="Nombre" required maxlength="60" aria-label="Nombre">
+          <input id="gsurname" placeholder="Apellido" required maxlength="80" aria-label="Apellido">
+          <button class="btn full" type="submit">Añadir a la lista</button>
+        </form>
+        <details class="more">
+          <summary>Añadir varios de golpe</summary>
+          <form id="bform" style="margin-top:8px">
+            <textarea id="btext" class="full" placeholder="Uno por línea, así:&#10;Marta García López&#10;Álvaro Fernández" aria-label="Lista de invitados, uno por línea"></textarea>
+            <button class="btn full" type="submit">Añadir todos</button>
+          </form>
+          <p class="note" style="margin-top:6px">La primera palabra es el nombre y el resto el apellido.</p>
+        </details>
+        <div class="msg" id="gmsg" role="status"></div>
+      </div>
+      <div class="glass">
+        <h2 id="gtitle">Lista cerrada</h2>
+        <input id="gsearch" type="search" placeholder="Buscar invitado" aria-label="Buscar invitado">
+        <div class="chips" id="gfilter">
+          <button class="chip" data-f="all" aria-pressed="true">Todos</button>
+          <button class="chip" data-f="paid" aria-pressed="false">Pagados</button>
+          <button class="chip" data-f="pending" aria-pressed="false">Pendientes</button>
+        </div>
+        <div id="glist"></div>
+        <div class="chips"><button class="chip" id="copypend" type="button">Copiar lista de pendientes</button></div>
+        <div class="msg" id="cmsg" role="status"></div>
+      </div>
+    </section>
+
+    <!-- PUERTA -->
+    <section id="v-door" class="hidden-view" style="flex-direction:column;gap:14px;display:flex">
+      <div class="glass">
+        <h2>Modo puerta</h2>
+        <div class="door-stats" id="dstats"></div>
+        <input id="dsearch" class="big-search" type="search" placeholder="Buscar en la puerta" aria-label="Buscar en la puerta">
+        <div class="chips" id="dfilter">
+          <button class="chip" data-f="out" aria-pressed="true">Sin entrar</button>
+          <button class="chip" data-f="in" aria-pressed="false">Dentro</button>
+          <button class="chip" data-f="all" aria-pressed="false">Todos</button>
+        </div>
+        <div id="dlist"></div>
+      </div>
+    </section>
+
+    <!-- GASTOS -->
+    <section id="v-exp" class="hidden-view" style="flex-direction:column;gap:14px;display:flex">
+      <div class="glass">
+        <h2>Añadir gasto</h2>
+        <form id="eform" autocomplete="off">
+          <input id="econcept" class="full" placeholder="Concepto (ej. hielo, DJ, local)" required maxlength="100" aria-label="Concepto">
+          <input id="eamount" type="number" inputmode="decimal" step="0.01" min="0.01" placeholder="Importe €" required aria-label="Importe en euros">
+          <input id="epayer" list="payers" placeholder="Lo ha pagado" required maxlength="40" aria-label="Quién lo ha pagado">
+          <datalist id="payers"></datalist>
+          <select id="ecat" class="full" aria-label="Categoría"></select>
+          <label class="f full" id="recwrap" hidden>Foto del ticket (opcional)<input id="erec" type="file" accept="image/*"></label>
+          <button class="btn full" type="submit" id="ebtn">Apuntar gasto</button>
+        </form>
+        <div class="msg" id="emsg" role="status"></div>
+      </div>
+      <div class="glass">
+        <h2 id="etitle">Gastos</h2>
+        <div id="elist"></div>
+      </div>
+    </section>
+
+    <!-- BALANCE -->
+    <section id="v-bal" class="hidden-view" style="flex-direction:column;gap:14px;display:flex">
+      <div class="glass" id="balcard"></div>
+      <div class="glass" id="catcard"></div>
+      <div class="glass">
+        <h2>Ajustes de la fiesta</h2>
+        <form id="pform">
+          <label class="f">Precio entrada (€)<input id="price" type="number" inputmode="decimal" step="0.01" min="0"></label>
+          <label class="f">Aforo máximo<input id="cap" type="number" inputmode="numeric" step="1" min="0" placeholder="Sin límite"></label>
+          <label class="f">Fecha<input id="date" type="date"></label>
+          <label class="f">Lugar<input id="place" maxlength="80" placeholder="Dónde es"></label>
+          <button class="btn full" type="submit">Guardar ajustes</button>
+        </form>
+        <div class="msg" id="pmsg" role="status"></div>
+      </div>
+      <div class="glass">
+        <h2>Descargar copia</h2>
+        <p class="note">Archivos CSV que se abren en Excel.</p>
+        <div class="chips" id="exports"></div>
+        <div class="msg" id="xmsg" role="status"></div>
+      </div>
+      <div class="glass">
+        <h2>Enlace de la fiesta</h2>
+        <p class="note">Pásale este enlace a tu socio. Quien lo tenga ve y edita todo, así que no lo publiques.</p>
+        <input id="sharelink" readonly aria-label="Enlace de la fiesta">
+        <div class="chips"><button class="btn small" id="sharebtn" type="button">Copiar enlace</button></div>
+        <div class="msg" id="sharemsg" role="status"></div>
+      </div>
+      <div class="glass" id="bkcard">
+        <h2>Copia de seguridad</h2>
+        <p class="note">Descarga de vez en cuando una copia de la lista y las cuentas. Restaurarla reemplaza todo lo que haya ahora, también para tu socio.</p>
+        <div class="chips">
+          <button class="btn small" id="bk-save" type="button">Descargar copia</button>
+          <button class="btn small ghost" id="bk-load" type="button">Restaurar copia</button>
+          <input id="bk-file" type="file" accept=".json,application/json" hidden>
+        </div>
+        <div class="msg" id="bkmsg" role="status"></div>
+      </div>
+      <div class="glass">
+        <h2>Actividad</h2>
+        <div id="loglist"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<nav aria-label="Secciones"><div class="dock" role="tablist">
+  <i class="ind" id="ind"></i>
+  <button role="tab" data-v="guests" aria-selected="true">Invitados</button>
+  <button role="tab" data-v="door" aria-selected="false">Puerta</button>
+  <button role="tab" data-v="exp" aria-selected="false">Gastos</button>
+  <button role="tab" data-v="bal" aria-selected="false">Balance</button>
+</div></nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="overlay" id="gate" hidden></div>
+
+<script>
+(function () {
+  var DEFAULT_PRICE = 12;
+  var CATS = ['Local', 'Bebida', 'Comida', 'Música', 'Decoración', 'Otros'];
+  var VIEWS = ['guests', 'door', 'exp', 'bal'];
+  var db = null, assets = null, downloads = null;
+  var guests = [], expenses = [], logs = [];
+  var cfg = { price: DEFAULT_PRICE, cap: 0, date: '2026-12-31', place: '' };
+  var filter = 'all', dfilter = 'out', query = '', dquery = '', pending = {}, choosing = null, busyUpload = false;
+
+  function $(id) { return document.getElementById(id); }
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === 'text') el.textContent = attrs[k];
+      else if (k.slice(0, 2) === 'on') el.addEventListener(k.slice(2), attrs[k]);
+      else el.setAttribute(k, attrs[k]);
+    }
+    (kids || []).forEach(function (c) { if (c) el.appendChild(c); });
+    return el;
+  }
+  var eur = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
+  function money(c) { return eur.format(c / 100); }
+  function cents(v) { return Math.round(Number(v) * 100); }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Número que cuenta hasta su nuevo valor
+  function tween(el, to) {
+    var from = el._v == null ? 0 : el._v; el._v = to;
+    el.classList.toggle('neg', to < 0);
+    if (reduce || from === to) { el.textContent = money(to); return; }
+    var t0 = performance.now(), d = 550;
+    (function step(t) {
+      var k = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = money(Math.round(from + (to - from) * e));
+      if (k < 1 && el._v === to) requestAnimationFrame(step);
+    })(t0);
+  }
+
+  // Quién usa la app (solo se recuerda en este dispositivo)
+  var me = '';
+  try { me = localStorage.getItem('fiesta-yo') || ''; } catch (e) {}
+  function setMe(n) { me = n; try { localStorage.setItem('fiesta-yo', n); } catch (e) {} renderWho(); if (!$('epayer').value) $('epayer').value = me; }
+  function renderWho() {
+    var w = $('who'); w.textContent = '';
+    if (me) {
+      w.appendChild(document.createTextNode('Eres '));
+      w.appendChild(h('strong', { text: me }));
+      w.appendChild(document.createTextNode(' · '));
+      w.appendChild(h('button', { class: 'link', text: 'cambiar', onclick: askMe }));
+    }
+  }
+  function askMe() {
+    var g = $('gate'); g.hidden = false; g.textContent = '';
+    var f = h('form', { style: 'grid-template-columns:minmax(0,1fr) auto' });
+    var i = h('input', { placeholder: 'Tu nombre (ej. Blete)', required: '', maxlength: '30', 'aria-label': 'Tu nombre' });
+    f.appendChild(i); f.appendChild(h('button', { class: 'btn', type: 'submit', text: 'Entrar' }));
+    f.addEventListener('submit', function (ev) { ev.preventDefault(); var n = i.value.trim(); if (!n) return; setMe(n); g.hidden = true; render(); });
+    g.appendChild(h('div', { class: 'glass' }, [
+      h('h2', { text: '¿Quién eres?' }),
+      h('p', { class: 'note', text: 'Sirve para apuntar quién cobra cada entrada y quién paga cada gasto. Usa siempre el mismo nombre.' }), f
+    ]));
+    i.value = me; setTimeout(function () { i.focus(); }, 50);
+  }
+
+  // Pestañas
+  var tabs = document.querySelectorAll('.dock button');
+  function showView(v) {
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.v === v)); });
+    VIEWS.forEach(function (x) { $('v-' + x).classList.toggle('hidden-view', x !== v); });
+    $('ind').style.transform = 'translateX(' + (VIEWS.indexOf(v) * 100) + '%)';
+    try { sessionStorage.setItem('fiesta-tab', v); } catch (e) {}
+  }
+  tabs.forEach(function (b) { b.addEventListener('click', function () { showView(b.dataset.v); window.scrollTo(0, 0); }); });
+  var startTab = 'guests'; try { startTab = sessionStorage.getItem('fiesta-tab') || 'guests'; } catch (e) {}
+  showView(VIEWS.indexOf(startTab) >= 0 ? startTab : 'guests');
+
+  // Aviso con "Deshacer"
+  var toastTimer = null;
+  function toast(text, undo) {
+    var box = $('toast'); box.textContent = ''; clearTimeout(toastTimer);
+    var kids = [h('span', { text: text })];
+    if (undo) kids.push(h('button', { text: 'Deshacer', onclick: function () { box.textContent = ''; clearTimeout(toastTimer); undo(); } }));
+    box.appendChild(h('div', {}, kids));
+    toastTimer = setTimeout(function () { box.textContent = ''; }, 6000);
+  }
+  function buzz() { try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {} }
+  var editing = null;
+
+  // Historial
+  function logIt(text) { if (db) db.collection('log').add({ who: me || 'Alguien', text: text, at: Date.now() }).catch(function () {}); }
+  function gname(g) { return g.name + ' ' + g.surname; }
+
+  // Cálculos
+  function calc() {
+    var priceC = cents(cfg.price);
+    var paid = guests.filter(function (g) { return g.paid; });
+    var inside = guests.filter(function (g) { return g.arrived; });
+    var income = paid.length * priceC;
+    var spent = expenses.reduce(function (s, e) { return s + e.cents; }, 0);
+    var people = {}, byMethod = { efectivo: 0, bizum: 0, otro: 0 }, byCat = {};
+    function p(n) { return people[n] || (people[n] = { name: n, collected: 0, cash: 0, bizum: 0, advanced: 0 }); }
+    paid.forEach(function (g) {
+      var q = p(g.collector || 'Sin asignar'); q.collected += priceC;
+      if (g.method === 'bizum') { q.bizum += priceC; byMethod.bizum += priceC; }
+      else if (g.method === 'efectivo') { q.cash += priceC; byMethod.efectivo += priceC; }
+      else byMethod.otro += priceC;
+    });
+    expenses.forEach(function (e) { p(e.payer || 'Sin asignar').advanced += e.cents; var c = e.category || 'Otros'; byCat[c] = (byCat[c] || 0) + e.cents; });
+    return { priceC: priceC, paid: paid.length, total: guests.length, inside: inside.length, income: income, pendingAmt: (guests.length - paid.length) * priceC,
+      spent: spent, balance: income - spent, byMethod: byMethod, byCat: byCat,
+      people: Object.keys(people).map(function (k) { return people[k]; }) };
+  }
+
+  function settle(c) {
+    var ppl = c.people.filter(function (x) { return x.name !== 'Sin asignar'; });
+    if (ppl.length < 2) return [];
+    var tot = ppl.reduce(function (s, x) { return s + x.collected - x.advanced; }, 0);
+    var share = Math.round(tot / ppl.length);
+    var debt = ppl.map(function (x) { return { name: x.name, d: (x.collected - x.advanced) - share }; });
+    var pay = [];
+    var give = debt.filter(function (x) { return x.d > 0; }).sort(function (a, b) { return b.d - a.d; });
+    var take = debt.filter(function (x) { return x.d < 0; }).sort(function (a, b) { return a.d - b.d; });
+    var i = 0, j = 0;
+    while (i < give.length && j < take.length) {
+      var amt = Math.min(give[i].d, -take[j].d);
+      if (amt > 0) pay.push({ from: give[i].name, to: take[j].name, c: amt });
+      give[i].d -= amt; take[j].d += amt;
+      if (give[i].d <= 0) i++;
+      if (take[j].d >= 0) j++;
+    }
+    return pay;
+  }
+
+  // Cabecera
+  function dateLabel() {
+    if (!cfg.date) return '';
+    var d = new Date(cfg.date + 'T00:00:00');
+    if (isNaN(d)) return '';
+    return d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  function renderHero(c) {
+    var dl = dateLabel();
+    $('when').textContent = [dl, cfg.place].filter(Boolean).join(' · ') || 'Pon fecha y lugar en Balance › Ajustes';
+    var ct = $('count');
+    if (cfg.date) {
+      var d = new Date(cfg.date + 'T00:00:00'), t = new Date(); t.setHours(0, 0, 0, 0);
+      var days = Math.round((d - t) / 86400000);
+      ct.hidden = isNaN(days);
+      ct.textContent = days > 1 ? 'Faltan ' + days + ' días' : days === 1 ? '¡Mañana!' : days === 0 ? '¡Es hoy!' : 'Ya pasó';
+    } else ct.hidden = true;
+    var cw = $('capwrap'); cw.hidden = false;
+    var cap = Number(cfg.cap) || 0;
+    $('captxt').textContent = cap ? c.total + ' de ' + cap + ' plazas' : c.total + ' apuntados · aforo sin límite';
+    var bar = $('capbar'); bar.style.display = cap ? '' : 'none';
+    if (cap) {
+      var pct = Math.min(100, Math.round(c.total / cap * 100));
+      bar.firstElementChild.style.width = pct + '%'; bar.classList.toggle('full', c.total >= cap);
+      bar.setAttribute('aria-valuenow', String(pct)); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', '100');
+    }
+    tween($('s-inc'), c.income); tween($('s-exp'), c.spent); tween($('s-bal'), c.balance);
+  }
+
+  function methodPill(g) { return g.paid && g.method ? h('span', { class: 'pill m', text: g.method === 'bizum' ? 'Bizum' : 'Efectivo' }) : null; }
+
+  function renderGuests(c) {
+    $('gtitle').textContent = 'Lista cerrada · ' + c.paid + ' de ' + c.total + ' han pagado';
+    var q = query.toLowerCase();
+    var list = guests.filter(function (g) {
+      if (filter === 'paid' && !g.paid) return false;
+      if (filter === 'pending' && g.paid) return false;
+      return !q || gname(g).toLowerCase().indexOf(q) !== -1;
+    });
+    var box = $('glist'); box.textContent = '';
+    if (!guests.length) { box.appendChild(h('div', { class: 'empty', text: 'Todavía no hay invitados. Añade el primero arriba.' })); return; }
+    if (!list.length) { box.appendChild(h('div', { class: 'empty', text: 'Nadie coincide con ese filtro.' })); return; }
+    list.forEach(function (g) {
+      if (editing === g.id) { box.appendChild(editRow(g)); return; }
+      var sub = h('div', { class: 'sub' }, [
+        h('span', { class: 'pill ' + (g.paid ? 'ok' : 'no'), text: g.paid ? 'Pagado' : 'Pendiente' }), methodPill(g),
+        g.paid && g.collector ? h('span', { text: 'cobró ' + g.collector }) : null,
+        g.arrived ? h('span', { class: 'pill ok', text: 'Dentro' }) : null
+      ]);
+      var row = h('div', { class: 'row' }, [
+        h('button', { class: 'pay', 'aria-pressed': String(!!g.paid), 'aria-label': (g.paid ? 'Marcar como pendiente a ' : 'Cobrar a ') + gname(g), text: '✓',
+          onclick: function () { if (g.paid) unpay(g); else { choosing = choosing === g.id ? null : g.id; render(); } } }),
+        h('div', { class: 'txt' }, [h('div', { class: 'name', text: gname(g) }), sub]),
+        h('button', { class: 'btn ghost small', text: '✎', 'aria-label': 'Editar a ' + gname(g), onclick: function () { editing = g.id; choosing = null; render(); } }),
+        delBtn('g' + g.id, function () {
+          var copy = strip(g);
+          var pr = db.doc('guests/' + g.id).delete();
+          logIt('quitó a ' + gname(g) + ' de la lista');
+          toast('Quitado: ' + gname(g), function () { db.doc('guests/' + g.id).set(copy).catch(showErr); logIt('recuperó a ' + gname(g)); });
+          return pr;
+        })
+      ]);
+      if (choosing === g.id) {
+        row.appendChild(h('div', { class: 'choose' }, [
+          h('span', { class: 'note', text: 'Cobrado con:' }),
+          h('button', { class: 'btn small', text: 'Bizum', onclick: function () { pay(g, 'bizum', false); } }),
+          h('button', { class: 'btn small', text: 'Efectivo', onclick: function () { pay(g, 'efectivo', false); } }),
+          h('button', { class: 'btn small ghost', text: 'Cancelar', onclick: function () { choosing = null; render(); } })
+        ]));
+      }
+      box.appendChild(row);
+    });
+  }
+
+  function renderDoor(c) {
+    var ds = $('dstats'); ds.textContent = '';
+    var sinPagar = guests.filter(function (g) { return !g.paid; }).length;
+    [[c.inside, 'Dentro'], [c.total - c.inside, 'Faltan'], [sinPagar, 'Sin pagar']].forEach(function (x) {
+      ds.appendChild(h('div', {}, [h('b', { text: String(x[0]) }), h('span', { text: x[1] })]));
+    });
+    var q = dquery.toLowerCase();
+    var list = guests.filter(function (g) {
+      if (dfilter === 'out' && g.arrived) return false;
+      if (dfilter === 'in' && !g.arrived) return false;
+      return !q || gname(g).toLowerCase().indexOf(q) !== -1;
+    });
+    var box = $('dlist'); box.textContent = '';
+    if (!guests.length) { box.appendChild(h('div', { class: 'empty', text: 'Aún no hay lista. Añade invitados en la primera pestaña.' })); return; }
+    if (!list.length) { box.appendChild(h('div', { class: 'empty', text: dfilter === 'out' && !q ? 'Todos han entrado.' : 'Nadie coincide.' })); return; }
+    list.forEach(function (g) {
+      var acts = h('div', { class: 'acts' });
+      if (g.arrived) acts.appendChild(h('button', { class: 'btn small on', text: 'Dentro ✓', 'aria-label': 'Quitar entrada a ' + gname(g), onclick: function () { arrive(g, false); } }));
+      else if (g.paid) acts.appendChild(h('button', { class: 'btn small', text: 'Entra', onclick: function () { arrive(g, true); } }));
+      else {
+        acts.appendChild(h('button', { class: 'btn small', text: 'Bizum', 'aria-label': 'Cobrar con Bizum a ' + gname(g), onclick: function () { pay(g, 'bizum', true); } }));
+        acts.appendChild(h('button', { class: 'btn small', text: 'Efectivo', 'aria-label': 'Cobrar en efectivo a ' + gname(g), onclick: function () { pay(g, 'efectivo', true); } }));
+      }
+      box.appendChild(h('div', { class: 'row' }, [
+        h('div', { class: 'txt' }, [h('div', { class: 'name', text: gname(g) }),
+          h('div', { class: 'sub' }, [h('span', { class: 'pill ' + (g.paid ? 'ok' : 'no'), text: g.paid ? 'Pagado' : 'Sin pagar · ' + money(c.priceC) }), methodPill(g)])]),
+        acts
+      ]));
+    });
+  }
+
+  function strip(o) { var c = {}; for (var k in o) if (k !== 'id') c[k] = o[k]; return c; }
+
+  function editRow(g) {
+    var n = h('input', { value: g.name, maxlength: '60', required: '', 'aria-label': 'Nombre' });
+    var s = h('input', { value: g.surname, maxlength: '80', required: '', 'aria-label': 'Apellido' });
+    var f = h('form', { style: 'flex:1 1 100%' }, [n, s,
+      h('button', { class: 'btn small', type: 'submit', text: 'Guardar' }),
+      h('button', { class: 'btn small ghost', type: 'button', text: 'Cancelar', onclick: function () { editing = null; render(); } })]);
+    f.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var nn = n.value.trim(), ss = s.value.trim();
+      if (!nn || !ss) return;
+      editing = null;
+      db.doc('guests/' + g.id).update({ name: nn, surname: ss }).catch(showErr);
+      logIt('cambió «' + gname(g) + '» por «' + nn + ' ' + ss + '»');
+      render();
+    });
+    setTimeout(function () { n.focus(); }, 30);
+    return h('div', { class: 'row' }, [f]);
+  }
+
+  function delBtn(key, fn) {
+    var armed = pending[key];
+    return h('button', { class: 'btn ghost small danger', text: armed ? '¿Seguro?' : 'Quitar', onclick: function () {
+      if (!pending[key]) { pending[key] = setTimeout(function () { delete pending[key]; render(); }, 3000); render(); return; }
+      clearTimeout(pending[key]); delete pending[key]; fn().catch(showErr);
+    } });
+  }
+
+  function renderExpenses(c) {
+    $('etitle').textContent = 'Gastos · ' + money(c.spent);
+    var box = $('elist'); box.textContent = '';
+    if (!expenses.length) box.appendChild(h('div', { class: 'empty', text: 'Aún no hay gastos. Apunta el primero arriba.' }));
+    expenses.forEach(function (e) {
+      var d = e.createdAt ? new Date(e.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) : '';
+      var kids = [];
+      if (e.receipt) kids.push(h('button', { class: 'thumbbtn', 'aria-label': 'Ver ticket de ' + e.concept, onclick: function () { showImg(receiptSrc(e.receipt)); } }, [h('img', { class: 'thumb', src: receiptSrc(e.receipt), alt: 'Ticket de ' + e.concept })]));
+      kids.push(h('div', { class: 'txt' }, [h('div', { class: 'name', text: e.concept }),
+        h('div', { class: 'sub' }, [h('span', { class: 'pill m', text: e.category || 'Otros' }), h('span', { text: 'Pagó ' + e.payer + (d ? ' · ' + d : '') })])]));
+      kids.push(h('div', { class: 'amt', text: money(e.cents) }));
+      kids.push(delBtn('e' + e.id, function () {
+        var copy = strip(e);
+        var pr = db.doc('expenses/' + e.id).delete();
+        logIt('borró el gasto «' + e.concept + '» (' + money(e.cents) + ')');
+        toast('Gasto borrado: ' + e.concept, function () { db.doc('expenses/' + e.id).set(copy).catch(showErr); logIt('recuperó el gasto «' + e.concept + '»'); });
+        return pr;
+      }));
+      box.appendChild(h('div', { class: 'row' }, kids));
+    });
+    var dl = $('payers'); dl.textContent = '';
+    var names = {}; if (me) names[me] = 1; expenses.forEach(function (e) { names[e.payer] = 1; }); guests.forEach(function (g) { if (g.collector) names[g.collector] = 1; });
+    Object.keys(names).forEach(function (n) { dl.appendChild(h('option', { value: n })); });
+  }
+
+  function renderBalance(c) {
+    var card = $('balcard'); card.textContent = '';
+    card.appendChild(h('h2', { text: 'Balance' }));
+    function kv(a, b) { return h('div', { class: 'kv' }, [h('span', { text: a }), h('span', { text: b })]); }
+    card.appendChild(kv('Entradas cobradas (' + c.paid + ' × ' + money(c.priceC) + ')', money(c.income)));
+    card.appendChild(kv('· en efectivo', money(c.byMethod.efectivo)));
+    card.appendChild(kv('· por Bizum', money(c.byMethod.bizum)));
+    if (c.byMethod.otro) card.appendChild(kv('· sin forma de pago', money(c.byMethod.otro)));
+    card.appendChild(kv('Gastos', '− ' + money(c.spent)));
+    card.appendChild(kv('Saldo actual', money(c.balance)));
+    card.appendChild(kv('Aún por cobrar (' + (c.total - c.paid) + ' pendientes)', money(c.pendingAmt)));
+    card.appendChild(kv('Saldo si cobráis todo', money(c.balance + c.pendingAmt)));
+    card.appendChild(h('h3', { text: 'Por persona', style: 'margin-top:6px' }));
+    if (!c.people.length) card.appendChild(h('div', { class: 'note', text: 'Aparecerá aquí cuando alguien cobre entradas o pague gastos.' }));
+    c.people.forEach(function (x) {
+      card.appendChild(h('div', { class: 'kv long' }, [
+        h('span', { text: x.name }),
+        h('span', { text: 'cobró ' + money(x.collected) + ' (' + money(x.cash) + ' efec. · ' + money(x.bizum) + ' Bizum) · pagó ' + money(x.advanced) + ' · tiene ' + money(x.collected - x.advanced) })
+      ]));
+    });
+    var s = settle(c);
+    if (s.length) s.forEach(function (t) { card.appendChild(h('div', { class: 'settle', text: t.from + ' pasa ' + money(t.c) + ' a ' + t.to + ' para quedar a partes iguales.' })); });
+    else if (c.people.filter(function (x) { return x.name !== 'Sin asignar'; }).length >= 2) card.appendChild(h('div', { class: 'settle', text: 'Estáis al día: nadie debe nada a nadie.' }));
+    card.appendChild(h('p', { class: 'note', text: 'El reparto divide el saldo a partes iguales entre quienes han cobrado o pagado algo.' }));
+
+    var cc = $('catcard'); cc.textContent = '';
+    cc.appendChild(h('h2', { text: 'En qué se va el dinero' }));
+    var keys = Object.keys(c.byCat).sort(function (a, b) { return c.byCat[b] - c.byCat[a]; });
+    if (!keys.length) cc.appendChild(h('div', { class: 'note', text: 'Cuando apuntes gastos verás el reparto por categoría.' }));
+    keys.forEach(function (k) {
+      var pct = c.spent ? Math.round(c.byCat[k] / c.spent * 100) : 0;
+      var bar = h('div', { class: 'bar' }, [h('i', { style: 'width:' + pct + '%' })]);
+      cc.appendChild(h('div', { class: 'cat' }, [h('span', { text: k }), bar, h('span', { text: money(c.byCat[k]) + ' · ' + pct + '%' })]));
+    });
+
+    var ae = document.activeElement;
+    var formBusy = ae && ['price', 'cap', 'date', 'place'].indexOf(ae.id) >= 0;
+    if (!formBusy) { $('price').value = String(cfg.price); $('cap').value = cfg.cap ? String(cfg.cap) : ''; $('date').value = cfg.date || ''; $('place').value = cfg.place || ''; }
+
+    var lg = $('loglist'); lg.textContent = '';
+    if (!logs.length) lg.appendChild(h('div', { class: 'note', text: 'Aquí verás quién hizo qué.' }));
+    logs.forEach(function (l) {
+      var t = new Date(l.at).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      lg.appendChild(h('div', { class: 'log' }, [h('span', { text: l.who + ' ' + l.text }), h('time', { text: t })]));
+    });
+  }
+
+  function render() {
+    if (!db) return;
+    var c = calc();
+    renderHero(c); renderGuests(c); renderDoor(c); renderExpenses(c); renderBalance(c);
+  }
+
+  function showErr(e) {
+    var m = (e && e.code === 'server') ? 'El servidor no aceptó el cambio. Revisa los datos e inténtalo de nuevo.' : (e && e.code === 'storage') ? 'El móvil no deja guardar más (almacenamiento lleno). Quita fotos de tickets o descarga una copia.' : 'No se pudo guardar. Inténtalo de nuevo.';
+    ['gmsg', 'emsg', 'pmsg'].forEach(function (id) { $(id).className = 'msg'; $(id).textContent = m; });
+  }
+
+  // Acciones
+  function pay(g, method, enter) {
+    if (!me) { askMe(); return; }
+    choosing = null;
+    var data = { paid: true, method: method, collector: me, paidAt: Date.now() };
+    if (enter) { data.arrived = true; data.arrivedAt = Date.now(); }
+    buzz();
+    db.doc('guests/' + g.id).update(data).catch(showErr);
+    logIt('cobró a ' + gname(g) + ' (' + money(cents(cfg.price)) + ', ' + (method === 'bizum' ? 'Bizum' : 'efectivo') + ')' + (enter ? ' en la puerta' : ''));
+  }
+  function unpay(g) {
+    if (!me) { askMe(); return; }
+    var back = { paid: !!g.paid, method: g.method || '', collector: g.collector || '', paidAt: g.paidAt || 0 };
+    db.doc('guests/' + g.id).update({ paid: false, method: '', collector: '', paidAt: 0 }).catch(showErr);
+    logIt('marcó como pendiente a ' + gname(g));
+    toast(gname(g) + ' vuelve a pendiente', function () { db.doc('guests/' + g.id).update(back).catch(showErr); logIt('deshizo el cambio de ' + gname(g)); });
+  }
+  function arrive(g, v) {
+    buzz();
+    db.doc('guests/' + g.id).update({ arrived: v, arrivedAt: v ? Date.now() : 0 }).catch(showErr);
+    logIt((v ? 'dio entrada a ' : 'quitó la entrada a ') + gname(g));
+    if (!v) toast('Entrada quitada a ' + gname(g), function () { db.doc('guests/' + g.id).update({ arrived: true, arrivedAt: Date.now() }).catch(showErr); });
+  }
+
+  // Formularios
+  $('gform').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var n = $('gname').value.trim(), s = $('gsurname').value.trim();
+    if (!n || !s) return;
+    $('gmsg').className = 'msg';
+    var dup = guests.some(function (g) { return g.name.toLowerCase() === n.toLowerCase() && g.surname.toLowerCase() === s.toLowerCase(); });
+    if (dup) { $('gmsg').textContent = n + ' ' + s + ' ya está en la lista.'; return; }
+    var cap = Number(cfg.cap) || 0;
+    if (cap && guests.length >= cap) { $('gmsg').textContent = 'Aforo completo (' + cap + '). Súbelo en Balance › Ajustes.'; return; }
+    $('gmsg').textContent = '';
+    db.collection('guests').add({ name: n, surname: s, paid: false, method: '', collector: '', paidAt: 0, arrived: false, arrivedAt: 0, createdAt: Date.now() }).catch(showErr);
+    $('gname').value = ''; $('gsurname').value = ''; $('gname').focus(); logIt('añadió a ' + n + ' ' + s);
+  });
+
+  function shrink(file) {
+    return new Promise(function (res, rej) {
+      var img = new Image(), u = URL.createObjectURL(file);
+      img.onload = function () {
+        var s = Math.min(1, 700 / Math.max(img.width, img.height));
+        var cv = document.createElement('canvas'); cv.width = Math.round(img.width * s); cv.height = Math.round(img.height * s);
+        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height); URL.revokeObjectURL(u);
+        res(cv.toDataURL('image/jpeg', 0.55));
+      };
+      img.onerror = function () { rej(new Error('img')); }; img.src = u;
+    });
+  }
+
+  $('eform').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (busyUpload) return;
+    var c = cents($('eamount').value), concept = $('econcept').value.trim(), payer = $('epayer').value.trim();
+    $('emsg').className = 'msg';
+    if (!concept || !payer || !(c > 0)) { $('emsg').textContent = 'Rellena concepto, importe y quién lo pagó.'; return; }
+    $('emsg').textContent = '';
+    var file = $('erec').files && $('erec').files[0];
+    busyUpload = true; $('ebtn').disabled = true;
+    var prep = file ? (($('emsg').textContent = 'Preparando foto…'), shrink(file)) : Promise.resolve('');
+    prep.then(function (rid) {
+      $('emsg').textContent = '';
+      var doc = { concept: concept, cents: c, payer: payer, category: $('ecat').value, createdAt: Date.now() };
+      if (rid) doc.receipt = rid;
+      db.collection('expenses').add(doc).catch(showErr);
+      $('econcept').value = ''; $('eamount').value = ''; $('erec').value = ''; $('econcept').focus();
+      logIt('apuntó el gasto «' + concept + '» (' + money(c) + ', pagó ' + payer + ')');
+    }).catch(function () { $('emsg').className = 'msg'; $('emsg').textContent = 'No se pudo preparar la foto. Prueba sin ella o con otra imagen.'; })
+      .then(function () { busyUpload = false; $('ebtn').disabled = false; });
+  });
+
+  $('pform').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var v = Number($('price').value), cap = Math.floor(Number($('cap').value) || 0);
+    $('pmsg').className = 'msg';
+    if (!(v >= 0)) { $('pmsg').textContent = 'Pon un precio válido.'; return; }
+    var next = { price: v, cap: cap, date: $('date').value || '', place: $('place').value.trim() };
+    db.doc('settings/config').set(next).catch(showErr);
+    $('pmsg').className = 'msg ok'; $('pmsg').textContent = 'Ajustes guardados.'; logIt('cambió los ajustes de la fiesta');
+  });
+
+  // Añadir varios de golpe
+  $('bform').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var lines = $('btext').value.split(/\r?\n/).map(function (l) { return l.trim().replace(/\s+/g, ' '); }).filter(Boolean);
+    $('gmsg').className = 'msg';
+    if (!lines.length) { $('gmsg').textContent = 'Escribe al menos un invitado.'; return; }
+    var cap = Number(cfg.cap) || 0, known = {}, skipped = [], toAdd = [];
+    guests.forEach(function (g) { known[gname(g).toLowerCase()] = 1; });
+    lines.forEach(function (l) {
+      var i = l.indexOf(' ');
+      if (i < 0) { skipped.push(l + ' (falta el apellido)'); return; }
+      var n = l.slice(0, i), s = l.slice(i + 1), k = l.toLowerCase();
+      if (known[k]) { skipped.push(l + ' (ya estaba)'); return; }
+      if (cap && guests.length + toAdd.length >= cap) { skipped.push(l + ' (aforo completo)'); return; }
+      known[k] = 1; toAdd.push({ name: n, surname: s });
+    });
+    var proms = toAdd.map(function (p, idx) {
+      return db.collection('guests').add({ name: p.name, surname: p.surname, paid: false, method: '', collector: '', paidAt: 0, arrived: false, arrivedAt: 0, createdAt: Date.now() + idx });
+    });
+    Promise.all(proms).catch(showErr);
+    if (toAdd.length) logIt('añadió ' + toAdd.length + ' invitados de golpe');
+    $('btext').value = skipped.join('\n');
+    $('gmsg').className = 'msg' + (skipped.length ? '' : ' ok');
+    $('gmsg').textContent = 'Añadidos ' + toAdd.length + '.' + (skipped.length ? ' Sin añadir (quedan en el cuadro): ' + skipped.length + '.' : '');
+  });
+
+  // Copiar pendientes de pago (para mandar por WhatsApp)
+  $('copypend').addEventListener('click', function () {
+    var p = guests.filter(function (g) { return !g.paid; });
+    var cm = $('cmsg'); cm.className = 'msg';
+    if (!p.length) { cm.className = 'msg ok'; cm.textContent = 'No hay pendientes: todos han pagado.'; return; }
+    var text = 'Pendientes de pagar la entrada (' + money(cents(cfg.price)) + ') · ' + p.length + ':\n' + p.map(function (g) { return '- ' + gname(g); }).join('\n');
+    function ok() { cm.className = 'msg ok'; cm.textContent = 'Lista copiada. Pégala en WhatsApp.'; }
+    function fallback() {
+      var t = h('textarea', { 'aria-label': 'Lista de pendientes' }); t.value = text; cm.textContent = ''; cm.appendChild(t); t.focus(); t.select();
+      try { if (document.execCommand('copy')) ok(); } catch (e) {}
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fallback); else fallback();
+  });
+
+  $('gsearch').addEventListener('input', function (e) { query = e.target.value.trim(); render(); });
+  $('dsearch').addEventListener('input', function (e) { dquery = e.target.value.trim(); render(); });
+  function chips(sel, set) {
+    document.querySelectorAll(sel + ' .chip').forEach(function (b) {
+      b.addEventListener('click', function () {
+        set(b.dataset.f);
+        document.querySelectorAll(sel + ' .chip').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        render();
+      });
+    });
+  }
+  chips('#gfilter', function (f) { filter = f; });
+  chips('#dfilter', function (f) { dfilter = f; });
+  CATS.forEach(function (k) { $('ecat').appendChild(h('option', { value: k, text: k })); });
+
+  // Exportar a CSV (abre en Excel)
+  function csv(rows) {
+    return '﻿' + rows.map(function (r) { return r.map(function (v) { v = String(v == null ? '' : v); return /[";\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(';'); }).join('\r\n');
+  }
+  function setupExports() {
+    var box = $('exports'); box.textContent = '';
+    if (!downloads) { box.appendChild(h('span', { class: 'note', text: 'La descarga no está disponible en esta vista.' })); return; }
+    function save(name, rows) {
+      $('xmsg').className = 'msg'; $('xmsg').textContent = '';
+      downloads.save({ filename: name, data: csv(rows) }).then(function () { $('xmsg').className = 'msg ok'; $('xmsg').textContent = 'Archivo guardado.'; })
+        .catch(function (e) { if (!e || e.code !== 'declined') $('xmsg').textContent = 'No se pudo descargar el archivo.'; });
+    }
+    box.appendChild(h('button', { class: 'btn small', text: 'Invitados', onclick: function () {
+      var rows = [['Nombre', 'Apellido', 'Pagado', 'Forma de pago', 'Cobró', 'Ha entrado']];
+      guests.forEach(function (g) { rows.push([g.name, g.surname, g.paid ? 'Sí' : 'No', g.method || '', g.collector || '', g.arrived ? 'Sí' : 'No']); });
+      save('chachovieja-invitados.csv', rows);
+    } }));
+    box.appendChild(h('button', { class: 'btn small', text: 'Gastos', onclick: function () {
+      var rows = [['Fecha', 'Concepto', 'Categoría', 'Importe (€)', 'Pagó']];
+      expenses.forEach(function (e) { rows.push([e.createdAt ? new Date(e.createdAt).toLocaleDateString('es-ES') : '', e.concept, e.category || 'Otros', (e.cents / 100).toFixed(2).replace('.', ','), e.payer]); });
+      save('chachovieja-gastos.csv', rows);
+    } }));
+  }
+
+  // Datos compartidos
+  function start(d) {
+    db = d; $('epayer').value = me;
+    var timer = setTimeout(function () { $('gmsg').className = 'msg'; $('gmsg').textContent = 'Los datos tardan en llegar. Comprueba tu conexión.'; }, 10000);
+    function got(snap) { if (!snap.metadata.fromCache) clearTimeout(timer); }
+    function err(e) { clearTimeout(timer); showErr(e); }
+    db.collection('guests').onSnapshot(function (snap) {
+      got(snap);
+      guests = snap.docs.map(function (d) { var x = d.data(); x.id = d.id; return x; })
+        .sort(function (a, b) { return (a.surname + a.name).localeCompare(b.surname + b.name, 'es'); });
+      render();
+    }, err);
+    db.collection('expenses').orderBy('createdAt', 'desc').onSnapshot(function (snap) {
+      got(snap); expenses = snap.docs.map(function (d) { var x = d.data(); x.id = d.id; return x; }); render();
+    }, err);
+    db.collection('log').orderBy('at', 'desc').limit(40).onSnapshot(function (snap) {
+      logs = snap.docs.map(function (d) { return d.data(); }); render();
+    }, err);
+    db.doc('settings/config').onSnapshot(function (snap) {
+      var x = snap.exists ? snap.data() : null;
+      cfg = {
+        price: x && typeof x.price === 'number' ? x.price : DEFAULT_PRICE,
+        cap: x && typeof x.cap === 'number' ? x.cap : 0,
+        date: x && typeof x.date === 'string' ? x.date : '2026-12-31',
+        place: x && typeof x.place === 'string' ? x.place : ''
+      };
+      render();
+    }, err);
+    if (!me) askMe();
+  }
+
+  renderWho();
+  function showImg(src) {
+    var g = $('gate'); g.hidden = false; g.textContent = '';
+    g.addEventListener('click', function close(ev) { if (ev.target === g) { g.hidden = true; g.textContent = ''; g.removeEventListener('click', close); } });
+    g.appendChild(h('div', { class: 'glass', style: 'align-items:center;max-height:90vh' }, [
+      h('img', { src: src, alt: 'Ticket', style: 'max-width:100%;max-height:68vh;border-radius:14px' }),
+      h('button', { class: 'btn', text: 'Cerrar', onclick: function () { g.hidden = true; g.textContent = ''; } })
+    ]));
+  }
+  // Descargas normales del navegador
+  downloads = { save: function (o) { return new Promise(function (res, rej) {
+    try {
+      var u = URL.createObjectURL(new Blob([o.data], { type: /\.json$/.test(o.filename) ? 'application/json' : 'text/csv;charset=utf-8' }));
+      var a = document.createElement('a'); a.href = u; a.download = o.filename; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(u); }, 4000); res({ status: 'saved' });
+    } catch (e) { rej({ code: 'unavailable' }); }
+  }); } };
+  setupExports();
+  $('recwrap').hidden = false;
+
+  // Datos compartidos en Netlify: cada fiesta se identifica por el código del enlace
+  var API = '/api/fiesta';
+  var code = '';
+  try {
+    code = (location.hash || '').replace(/^#/, '').trim();
+    if (code) localStorage.setItem('fiesta-code', code); else code = localStorage.getItem('fiesta-code') || '';
+  } catch (e) {}
+  function isObj(o) { return o && typeof o === 'object' && !Array.isArray(o); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  var seq = 0;
+  function newId() { return Date.now().toString(36) + (++seq).toString(36) + Math.random().toString(36).slice(2, 6); }
+  function receiptSrc(r) {
+    return typeof r === 'string' && r.indexOf('r:') === 0 ? API + '?code=' + encodeURIComponent(code) + '&receipt=' + encodeURIComponent(r.slice(2)) : r;
+  }
+  function setMode(t) { $('mode').textContent = t; }
+
+  var RDB = (function () {
+    var COLS = ['guests', 'expenses', 'log', 'settings'];
+    var data = { guests: {}, expenses: {}, log: {}, settings: {} }, v = 0, loaded = false, subs = [], queue = [], sending = false, retry = null;
+    var LIVE = 'Compartida en vivo · se actualiza sola';
+    function notify() { subs.slice().forEach(function (f) { f(); }); }
+    function applyLocal(op) {
+      var c = data[op.c];
+      if (op.t === 'set') c[op.id] = clone(op.d);
+      else if (op.t === 'update') { if (c[op.id]) for (var k in op.d) c[op.id][k] = op.d[k]; }
+      else delete c[op.id];
+    }
+    function setServer(st) {
+      v = st.v || 0;
+      COLS.forEach(function (c) { data[c] = isObj(st[c]) ? st[c] : {}; });
+      queue.forEach(applyLocal);
+      loaded = true; setMode(queue.length ? 'Guardando…' : LIVE); notify();
+    }
+    function flush() {
+      if (sending || !queue.length) return;
+      sending = true; var batch = queue.slice(0, 100);
+      setMode('Guardando…');
+      fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code: code, ops: batch }) })
+        .then(function (r) { if (!r.ok) throw r.status; return r.json(); })
+        .then(function (st) { queue.splice(0, batch.length); sending = false; setServer(st); flush(); })
+        .catch(function (st) {
+          sending = false;
+          if (st === 400 || st === 413) { queue.splice(0, batch.length); showErr({ code: 'server' }); setMode(LIVE); return; }
+          setMode('Sin conexión · tus cambios se guardan en cuanto vuelva');
+          clearTimeout(retry); retry = setTimeout(flush, 4000);
+        });
+    }
+    function push(op) { applyLocal(op); queue.push(op); notify(); flush(); return Promise.resolve(); }
+    function poll(force) {
+      if (sending || queue.length || (!force && document.visibilityState === 'hidden')) return;
+      fetch(API + '?code=' + encodeURIComponent(code) + (v ? '&since=' + v : ''), { cache: 'no-store' })
+        .then(function (r) { if (r.status === 204) return null; if (!r.ok) throw r.status; return r.json(); })
+        .then(function (st) { if (sending || queue.length) return; if (st) setServer(st); else setMode(LIVE); })
+        .catch(function () { setMode(loaded ? 'Sin conexión · reintentando…' : 'No se puede conectar con el servidor de la fiesta. ¿Está desplegada en Netlify desde GitHub?'); });
+    }
+    function snap(id, d) { return { id: id, exists: !!d, data: function () { return d; }, metadata: { fromCache: !loaded } }; }
+    function watch(run) { subs.push(run); setTimeout(run, 0); return function () { subs = subs.filter(function (f) { return f !== run; }); }; }
+    function docRef(c, id) {
+      return {
+        set: function (d) { return push({ t: 'set', c: c, id: id, d: clone(d) }); },
+        update: function (d) { if (!data[c][id]) return Promise.reject({ code: 'not-found' }); return push({ t: 'update', c: c, id: id, d: clone(d) }); },
+        delete: function () { return push({ t: 'delete', c: c, id: id }); },
+        onSnapshot: function (cb) { return watch(function () { cb(snap(id, data[c][id])); }); }
+      };
+    }
+    function coll(c, q) {
+      q = q || {};
+      return {
+        orderBy: function (f, d) { return coll(c, { ob: f, dir: d || 'asc', lim: q.lim }); },
+        limit: function (n) { return coll(c, { ob: q.ob, dir: q.dir, lim: n }); },
+        add: function (d) { return push({ t: 'set', c: c, id: newId(), d: clone(d) }); },
+        onSnapshot: function (cb) {
+          return watch(function () {
+            var docs = Object.keys(data[c]).map(function (id) { return snap(id, data[c][id]); });
+            if (q.ob) docs.sort(function (a, b) { var x = a.data()[q.ob] || 0, y = b.data()[q.ob] || 0; return q.dir === 'desc' ? y - x : x - y; });
+            if (q.lim) docs = docs.slice(0, q.lim);
+            cb({ docs: docs, size: docs.length, empty: !docs.length, metadata: { fromCache: !loaded } });
+          });
+        }
+      };
+    }
+    return {
+      db: { collection: function (n) { return coll(n); }, doc: function (p) { var a = p.split('/'); return docRef(a[0], a[1]); } },
+      dump: function () { return clone(data); },
+      load: function (o) {
+        COLS.forEach(function (c) {
+          Object.keys(data[c]).forEach(function (id) { if (!(isObj(o[c]) && o[c][id])) push({ t: 'delete', c: c, id: id }); });
+          if (isObj(o[c])) Object.keys(o[c]).forEach(function (id) { if (isObj(o[c][id])) push({ t: 'set', c: c, id: id, d: o[c][id] }); });
+        });
+        return Promise.resolve();
+      },
+      run: function () {
+        poll(true); setInterval(function () { poll(false); }, 4000);
+        document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') poll(); });
+        window.addEventListener('online', function () { flush(); poll(); });
+      }
+    };
+  })();
+
+  // Pantalla de entrada cuando no hay código
+  function gate(kids) {
+    $('app').hidden = true;
+    var g = $('gate'); g.hidden = false; g.textContent = '';
+    g.appendChild(h('div', { class: 'glass', style: 'align-items:center;text-align:center' },
+      [h('img', { class: 'logo', src: 'logo.png', alt: '', width: '96', height: '96' }), h('h2', { text: 'ChachoVieja 2026' })].concat(kids)));
+  }
+  function enter(c) { try { localStorage.setItem('fiesta-code', c); } catch (e) {} location.hash = c; location.reload(); }
+  function gateCode() {
+    var ci = h('input', { placeholder: 'Pega aquí el código', maxlength: '64', autocomplete: 'off', 'aria-label': 'Código de la fiesta' });
+    var cf = h('form', { style: 'grid-template-columns:minmax(0,1fr);width:100%' }, [ci, h('button', { class: 'btn ghost', type: 'submit', text: 'Entrar con código' })]);
+    var cm = h('div', { class: 'msg', role: 'status' });
+    cf.addEventListener('submit', function (ev) {
+      ev.preventDefault(); var c = ci.value.trim().replace(/^.*#/, '');
+      if (!/^[A-Za-z0-9_-]{8,64}$/.test(c)) { cm.textContent = 'Ese código no es válido.'; return; }
+      enter(c);
+    });
+    var create = h('button', { class: 'btn', type: 'button', text: 'Crear la fiesta', style: 'width:100%', onclick: function () {
+      var b = new Uint8Array(10); crypto.getRandomValues(b);
+      enter('cv-' + Array.prototype.map.call(b, function (x) { return ('0' + x.toString(16)).slice(-2); }).join(''));
+    } });
+    gate([
+      h('p', { class: 'note', text: 'Si eres quien organiza, crea la fiesta y luego pasa el enlace a tu socio desde Balance.' }), create,
+      h('p', { class: 'note', text: '¿Te han pasado un código o un enlace? Pégalo aquí:' }), cf, cm
+    ]);
+  }
+
+  // Copiar el enlace
+  $('sharebtn').addEventListener('click', function () {
+    var link = $('sharelink').value, m = $('sharemsg');
+    function ok() { m.className = 'msg ok'; m.textContent = 'Enlace copiado. Pásaselo por WhatsApp.'; }
+    function manual() { $('sharelink').focus(); $('sharelink').select(); try { if (document.execCommand('copy')) { ok(); return; } } catch (e) {} m.className = 'msg'; m.textContent = 'Mantén pulsado el enlace para copiarlo.'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(ok, manual); else manual();
+  });
+
+  // Copia de seguridad
+  var armed = null;
+  $('bk-save').addEventListener('click', function () {
+    var m = $('bkmsg'); m.className = 'msg';
+    downloads.save({ filename: 'chachovieja-copia.json', data: JSON.stringify(RDB.dump()) })
+      .then(function () { m.className = 'msg ok'; m.textContent = 'Copia descargada.'; }, function () { m.textContent = 'No se pudo descargar la copia.'; });
+  });
+  $('bk-load').addEventListener('click', function () {
+    var b = $('bk-load');
+    if (!armed) { b.textContent = '¿Reemplazar todo? Pulsa otra vez'; armed = setTimeout(function () { armed = null; b.textContent = 'Restaurar copia'; }, 4000); return; }
+    clearTimeout(armed); armed = null; b.textContent = 'Restaurar copia'; $('bk-file').click();
+  });
+  $('bk-file').addEventListener('change', function () {
+    var f = this.files && this.files[0], inp = this, m = $('bkmsg'); m.className = 'msg';
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      try {
+        var o = JSON.parse(r.result);
+        if (!o || typeof o.guests !== 'object') throw new Error('x');
+        RDB.load(o).then(function () { m.className = 'msg ok'; m.textContent = 'Copia restaurada.'; logIt('restauró una copia de seguridad'); });
+      } catch (e) { m.textContent = 'Ese archivo no es una copia válida.'; }
+    };
+    r.readAsText(f); inp.value = '';
+  });
+
+  if (!/^[A-Za-z0-9_-]{8,64}$/.test(code)) gateCode();
+  else {
+    $('sharelink').value = location.origin + location.pathname + '#' + code;
+    setMode('Conectando…');
+    start(RDB.db);
+    RDB.run();
+  }
+})();
+</script>
+</body>
+</html>
