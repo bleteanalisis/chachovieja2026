@@ -56,7 +56,7 @@ html { color-scheme: dark; }
 body {
   background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.4;
   min-height: 100vh; position: relative;
-  padding-block: calc(14px + env(safe-area-inset-top, 0px)) 130px; margin: 0;
+  padding-block: calc(86px + env(safe-area-inset-top, 0px)) 96px; margin: 0;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
@@ -191,7 +191,7 @@ textarea { font: inherit; color: var(--ink); background: var(--field); border: 1
 .door-stats span { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 
 /* Navegación flotante */
-nav { position: fixed; left: 0; right: 0; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 5; pointer-events: none;
+nav { position: fixed; left: 0; right: 0; top: calc(8px + env(safe-area-inset-top, 0px)); z-index: 5; pointer-events: none;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .dock { pointer-events: auto; position: relative; max-width: 520px; margin: 0 auto; padding: 6px; border-radius: 30px; display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
   background: linear-gradient(145deg, var(--glass-a), var(--glass-b)); border: 1px solid var(--glass-line);
@@ -436,7 +436,7 @@ nav { position: fixed; left: 0; right: 0; bottom: calc(10px + env(safe-area-inse
     $('ind').style.transform = 'translateX(' + (VIEWS.indexOf(v) * 100) + '%)';
     try { sessionStorage.setItem('fiesta-tab', v); } catch (e) {}
   }
-  tabs.forEach(function (b) { b.addEventListener('click', function () { showView(b.dataset.v); }); });
+  tabs.forEach(function (b) { b.addEventListener('click', function () { showView(b.dataset.v); window.scrollTo(0, 0); }); });
   var startTab = 'guests'; try { startTab = sessionStorage.getItem('fiesta-tab') || 'guests'; } catch (e) {}
   showView(VIEWS.indexOf(startTab) >= 0 ? startTab : 'guests');
 
